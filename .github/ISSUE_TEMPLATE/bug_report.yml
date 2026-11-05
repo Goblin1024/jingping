@@ -1,0 +1,80 @@
+name: Bug 报告
+description: 报告安装、VPN、无障碍或目标 App 适配问题
+title: "[Bug] "
+labels:
+  - bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提交前请先阅读 README、docs/MAINTENANCE.md 和现有 Issue。
+        请勿上传账号信息、完整界面截图或未脱敏日志。安全漏洞请按 SECURITY.md 私下报告。
+  - type: input
+    id: version
+    attributes:
+      label: 净屏版本
+      placeholder: 1.1.8
+    validations:
+      required: true
+  - type: input
+    id: device
+    attributes:
+      label: 设备与系统
+      placeholder: iQOO Z10 Turbo Pro / Android 16 / PD2453D_A_16.1.18.1.W10
+    validations:
+      required: true
+  - type: input
+    id: target
+    attributes:
+      label: 目标 App 与版本
+      placeholder: 红果短剧 7.4.0.32 / 番茄小说 6.x
+  - type: dropdown
+    id: area
+    attributes:
+      label: 问题类型
+      options:
+        - 安装或启动
+        - 无障碍 / 跳过广告
+        - VPN / 域名阻断
+        - 剧集恢复 / 季集安全
+        - 金币红包挂件
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: 实际行为
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: 日志
+      description: 可使用 tools/device-check.sh 或 adb logcat 抓取，请先脱敏。
+      render: shell
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 我已阅读 README 和 docs/MAINTENANCE.md，并搜索过现有 Issue。
+          required: true
+        - label: 我确认日志和截图中不包含账号、手机号或其他个人敏感信息。
+          required: true

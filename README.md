@@ -11,12 +11,43 @@
 
 已在 **iQOO Z10 Turbo Pro（V2453A / Android 16 / 系统 PD2453D_A_16.1.18.1.W10）** 上实测。
 
+> 当前为个人维护的早期版本，提供 debug 签名 APK，未上架应用商店。仅建议在 Android 8.0 及以上、arm64-v8a 设备上侧载使用。
+
+## 下载与安装
+
+- 最新版本：[GitHub Releases](../../releases/latest)
+- 历史版本与校验和：[dist/README.md](dist/README.md)
+- 当前版本：`1.1.8`，文件名 `jingping-v1.1.8-debug.apk`
+- SHA-256：`7dc3ea5dad0c2ded282d456b31422e0890b627cad3f61c3745a2a8b310a0e48c`
+
+下载后可以侧载安装，或使用 ADB：
+
+```bash
+adb install -r jingping-v1.1.8-debug.apk
+```
+
+首次使用需要开启无障碍服务和本地 VPN，完整步骤见[安装与首次使用](#安装与首次使用)。
+
+## 兼容性
+
+| 项目 | 要求 |
+| --- | --- |
+| 系统版本 | Android 8.0（API 26）及以上 |
+| CPU 架构 | arm64-v8a |
+| 目标应用 | 红果短剧、红果漫剧、番茄小说 / 短剧 |
+| 实测设备 | iQOO Z10 Turbo Pro（V2453A / Android 16 / `PD2453D_A_16.1.18.1.W10`） |
+| 签名 | debug 签名；不同签名的 APK 不能直接覆盖升级 |
+
+其他机型和其他目标应用版本尚未验证。目标 App 升级后界面节点可能变化，相关功能可能暂时失效。
+
 ## 项目文档
 
 - [CHANGELOG.md](CHANGELOG.md)：版本级变更、真机验证摘要和已知问题。
 - [docs/MAINTENANCE.md](docs/MAINTENANCE.md)：构建、架构、调试、回归测试和发布检查清单。
 - [docs/DEVLOG.md](docs/DEVLOG.md)：按日期记录的真机验证证据与未完成事项。
 - [dist/README.md](dist/README.md)：历史 APK 和校验和说明。
+- [CONTRIBUTING.md](CONTRIBUTING.md)：构建、真机回归和提交规范。
+- [SECURITY.md](SECURITY.md)：安全问题私下报告方式。
 - `tools/device-check.sh`：只读检查设备、安装版本、VPN、无障碍和最近日志。
 
 ## 工作方式
@@ -104,14 +135,26 @@ Android 上无法用普通第三方 App 保证“所有 App、所有广告、绝
 
 要做到代码层彻底删除广告、传感器监听和强制倒计时，仍需要 Root/LSPosed、修改目标 APK，或使用官方无广告版本。
 
-## 安装
+## 安装与首次使用
 
 ```bash
-adb install -r dist/jingping-v1.1.8-debug.apk
+adb install -r jingping-v1.1.8-debug.apk
 ```
 
-当前 APK：`dist/jingping-v1.1.8-debug.apk`  
-SHA-256：`7dc3ea5dad0c2ded282d456b31422e0890b627cad3f61c3745a2a8b310a0e48c`
+- 当前版本：`1.1.8`
+- SHA-256：`7dc3ea5dad0c2ded282d456b31422e0890b627cad3f61c3745a2a8b310a0e48c`
+
+校验下载文件：
+
+```bash
+sha256sum jingping-v1.1.8-debug.apk
+```
+
+Windows PowerShell：
+
+```powershell
+Get-FileHash .\jingping-v1.1.8-debug.apk -Algorithm SHA256
+```
 
 如果 vivo 弹出外部来源安装确认，按系统提示继续。
 
@@ -123,6 +166,8 @@ SHA-256：`7dc3ea5dad0c2ded282d456b31422e0890b627cad3f61c3745a2a8b310a0e48c`
 4. 保持“自动跳过广告”“广告秒退 · 精确选集”“关闭金币 / 红包挂件”“摇一摇误跳自动返回”开启。
 
 “广告秒退 · 精确选集”会短暂切到历史页，再通过播放器选集直接播放下一集片头。如果某一版红果界面结构变化导致无法恢复，可关闭该开关，退回“遮挡广告画面”的兼容模式。
+
+如果之前安装过其他签名的版本（例如另一台机器构建的 debug 包），需要先卸载旧版再安装；保持同一签名才能覆盖升级。公开分发建议使用固定 release keystore，见下文“正式签名（可选）”。
 
 ## 构建
 
@@ -144,6 +189,40 @@ APK 输出：
 ```text
 app/build/outputs/apk/debug/app-debug.apk
 ```
+
+GitHub Actions 会在 push 和 PR 时运行 `:app:assembleDebug`，APK 作为 Actions artifact 上传，不作为正式发布包。
+
+如果根目录存在 `keystore.properties`，也可以构建已签名的 release 包：
+
+```bash
+./gradlew :app:assembleRelease
+```
+
+输出为 `app/build/outputs/apk/release/app-release.apk`；没有配置签名时输出未签名包，不能直接安装。
+
+### 正式签名（可选）
+
+公开分发建议使用固定的 release keystore，避免不同机器构建的 APK 签名不一致，导致用户无法覆盖升级。
+
+1. 生成 keystore（只生成一次，并离线备份）：
+
+```bash
+keytool -genkeypair -v \
+  -keystore ~/keys/jingping-release.jks \
+  -alias jingping \
+  -keyalg RSA \
+  -keysize 4096 \
+  -validity 10000
+```
+
+2. 复制 `keystore.properties.example` 为 `keystore.properties`，填入 keystore 路径、密码和 alias。
+3. 构建：
+
+```bash
+./gradlew :app:assembleRelease
+```
+
+`keystore.properties`、`*.jks` 和 `*.keystore` 已被 `.gitignore` 忽略，不要提交到仓库，也不要把密码写进 CI 日志。
 
 ## 代码结构
 
@@ -171,8 +250,29 @@ app/src/main/assets/ad_domains.txt
 - 最近访问域名只保存在内存中，最多 600 条、最多回看 120 秒，用于把广告出现和近期请求关联起来。
 - 因为需要代理流量和阻断广告请求，1.1.x 新申请了 `INTERNET` 权限。
 
+## 反馈与参与
+
+- 安装、适配或功能问题请使用 [Bug 报告模板](.github/ISSUE_TEMPLATE/bug_report.yml)。
+- 提交前先阅读 [CONTRIBUTING.md](CONTRIBUTING.md) 和 [docs/MAINTENANCE.md](docs/MAINTENANCE.md)。
+- 不要在公开 Issue 中上传账号信息、完整界面截图或未脱敏日志。
+- 安全漏洞请按 [SECURITY.md](SECURITY.md) 私下报告。
+
+## 免责声明
+
+- 本项目与红果短剧、红果漫剧、番茄小说 / 短剧及其开发商无关联，也未获得其授权。
+- 本项目仅用于个人学习、研究和本机广告处理，不提供破解、去会员或绕过付费内容的功能。
+- 使用本工具可能违反目标应用的服务条款，并可能因目标应用升级而失效；请在了解风险后自行决定是否使用。
+- 作者不对因使用本项目造成的账号限制、数据丢失、设备问题或其他损失承担责任。
+- 请遵守所在地法律法规；不要将本项目用于商业侵权、绕过访问控制或其他违法用途。
+
 ## 第三方组件
 
 - `com.ooimi.library:tun2socks:1.0.4`，Apache License 2.0，项目地址：
   `https://github.com/yinshuai0324/AndroidLibraryX`
 - 该 AAR 内的 `libgojni.so` 包含 gVisor 相关组件，按其上游许可证使用。
+- `com.google.mlkit:text-recognition-chinese:16.0.1`，Google ML Kit，按 Google 的 SDK 条款使用。
+- 完整说明见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+
+## 许可证
+
+本项目使用 [MIT License](LICENSE)。第三方组件按其各自许可证使用，详见“第三方组件”。

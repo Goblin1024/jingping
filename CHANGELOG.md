@@ -2,6 +2,14 @@
 
 本文件从 1.1.8 开始作为正式维护记录。版本号采用 `MAJOR.MINOR.PATCH`，每个交付版本至少记录新增、修复、真机验证和已知问题。
 
+## [未发布]
+
+### 仓库
+
+- 补充 MIT License、贡献指南、安全策略、第三方组件声明、Issue/PR 模板和 GitHub Actions 构建检查。
+- 增加可选 release 签名配置和 `keystore.properties.example`；公开分发建议使用固定签名。
+- README 增加 GitHub Releases 下载、兼容性、校验和、反馈与免责声明。
+
 ## [1.1.8] - 2026-11-05
 
 ### 新增

@@ -5,3 +5,14 @@ local.properties
 *.iml
 *.apk
 *.aab
+*.jks
+*.keystore
+keystore.properties
+*.log
+*.hprof
+.DS_Store
+Thumbs.db
+.env
+.env.*
+/captures/
+/screenshots/

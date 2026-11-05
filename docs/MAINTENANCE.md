@@ -196,15 +196,17 @@ PID=$("$ADB" shell pidof com.pure.jingping)
 ## 发布检查清单
 
 1. 修改 `app/build.gradle` 的 `versionCode` 和 `versionName`。
-2. 同步修改 `MainActivity` 底部版本号、`README.md` 标题/安装路径/当前版本说明。
+2. 同步修改 `MainActivity` 底部版本号、`README.md` 标题/下载说明/当前版本和 `dist/README.md`。
 3. 运行 `./gradlew :app:assembleDebug`，确认构建成功。
 4. 安装到真机，做构建、VPN 范围、切换重启、广告阻断、学习记录、倒计时安全回归。
-5. 复制到 `dist/jingping-vX.Y.Z-debug.apk`。
-6. 运行 `sha256sum dist/jingping-vX.Y.Z-debug.apk`，更新 `README.md` 和 `dist/SHA256SUMS`。
-7. 更新 `CHANGELOG.md` 和 `docs/DEVLOG.md`，记录设备、系统、目标 App 版本、日志证据和未完成项。
-8. 确认 `git status`，不要把 `local.properties`、构建目录、APK 或临时日志提交进仓库。
+5. 公开分发版本使用固定 release keystore 构建 `./gradlew :app:assembleRelease`；debug 包只用于测试，不要作为长期升级渠道。
+6. 复制到 `dist/jingping-vX.Y.Z.apk`（debug 包保留 `-debug` 后缀），运行 `sha256sum dist/jingping-vX.Y.Z.apk`。
+7. 更新 `README.md`、`dist/README.md` 和 `dist/SHA256SUMS` 中的版本、文件名和哈希。
+8. 更新 `CHANGELOG.md` 和 `docs/DEVLOG.md`，记录设备、系统、目标 App 版本、日志证据和未完成项。
+9. 确认 `git status` 和 GitHub Actions 构建通过；不要把 `local.properties`、构建目录、APK、日志、截图、keystore 或 `keystore.properties` 提交进仓库。
+10. 提交后打 `vX.Y.Z` 标签并推送，在 GitHub Releases 上传 APK 和 `SHA256SUMS`。下载发布资产并重新校验哈希。
 
-APK 被根目录 `.gitignore` 的 `*.apk` 忽略，二进制需要单独备份到发布存储；`dist/SHA256SUMS` 和 `dist/README.md` 只记录元数据。
+APK 被根目录 `.gitignore` 的 `*.apk` 忽略，二进制只通过 GitHub Releases 或其他发布存储分发；`dist/SHA256SUMS` 和 `dist/README.md` 只记录元数据。
 
 ## 维护热点
 

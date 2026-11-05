@@ -45,6 +45,7 @@ ADB="$HOME/Android/Sdk/platform-tools/adb"
 - 行为变化必须更新 `CHANGELOG.md`；真机证据和未完成项更新到 `docs/DEVLOG.md`。
 - 发布新版本时同步修改 `app/build.gradle` 的 `versionCode/versionName`、`MainActivity` 底部版本号、`README.md` 版本/安装路径。
 - 复制 APK 到 `dist/` 后重新计算 SHA-256，并更新 `README.md` 与 `dist/SHA256SUMS`。
+- 对外分发使用 GitHub Releases；仓库只保留 `dist/SHA256SUMS` 和 `dist/README.md`，APK 不提交 Git。正式版本使用固定 release keystore，避免不同机器或 CI 的签名不一致。
 - 不提交 `local.properties`、`build/`、`.gradle/`、APK、临时日志或截图。
 - 不要无理由增加依赖；APK 已包含 ML Kit OCR 和 native tun2socks 库，体积约 28MB。
 
