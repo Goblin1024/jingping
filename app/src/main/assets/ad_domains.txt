@@ -1,0 +1,118 @@
+# 净屏内置广告域名规则
+# 使用后缀匹配：example.com 会同时匹配 a.example.com。
+# 只收录高置信度的第三方广告 SDK / 广告交易平台域名。
+
+# 字节跳动 / 穿山甲 / 巨量引擎
+pangolin-sdk-toutiao.com
+pangolin16s-sdk-toutiao.com
+pglstatp-toutiao.com
+pangolin.snssdk.com
+pangle.io
+pangle-sdk-toutiao.com
+ad.zijieapi.com
+ads.zijieapi.com
+ads5-normal.zijieapi.com
+ads3-normal.zijieapi.com
+ads3-normal-lq.zijieapi.com
+adlog.zijieapi.com
+ads5-normal-sinfonlineb.fqnovel.com
+ad.oceanengine.com
+adlog.oceanengine.com
+ad-service.oceanengine.com
+ad.toutiao.com
+ad-sign.byteimg.com
+p3-ad-sign.byteimg.com
+
+# 腾讯广告
+gdt.qq.com
+e.qq.com
+pgdt.gtimg.cn
+qzs.gdtimg.com
+adsmind.gdtimg.com
+gtt.gdt.qq.com
+win.gdt.qq.com
+ad.qq.com
+adx.qq.com
+c.ad.qq.com
+
+# 阿里妈妈 / 电商广告
+alimama.com
+tanx.com
+atanx.alicdn.com
+impdsp.meituan.com
+rtb.julang.taobao.com
+ads.union.jd.com
+ad.jd.com
+
+# 百度联盟
+pos.baidu.com
+cpro.baidu.com
+cpro.baidustatic.com
+dup.baidustatic.com
+cbjs.baidu.com
+mobads.baidu.com
+mobads-logs.baidu.com
+union.baidu.com
+
+# 快手 / 视频平台
+ad.kuaishou.com
+ad.e.kuaishou.com
+adssp.kuaishou.com
+adx.ksapisrv.com
+ad.iqiyi.com
+ad.m.iqiyi.com
+t7z.cupid.iqiyi.com
+ad.api.3g.youku.com
+ad.m.youku.com
+
+# 门户与手机厂商广告网络
+sax.sina.com.cn
+saxn.sina.com.cn
+sinaads.sina.com.cn
+sax.sina.cn
+moad.360.cn
+ad.360.cn
+adshow.360.cn
+union.360.cn
+ad.xiaomi.com
+ad.intl.xiaomi.com
+ad.mi.com
+ads.huawei.com
+adservice.hicloud.com
+ads.oppomobile.com
+adx.oppomobile.com
+ads.heytapmobi.com
+omes-sec.heytapmobi.com
+
+# Google / Amazon
+doubleclick.net
+googlesyndication.com
+googleadservices.com
+adservice.google.com
+admob.com
+amazon-adsystem.com
+
+# 国际移动广告 SDK
+applovin.com
+unityads.unity3d.com
+vungle.com
+chartboost.com
+adcolony.com
+inmobi.com
+mintegral.com
+ironsrc.com
+supersonicads.com
+fyber.com
+tapjoy.com
+digitalturbine.com
+mopub.com
+moatads.com
+criteo.com
+criteo.net
+pubmatic.com
+rubiconproject.com
+openx.net
+adnxs.com
+indexexchange.com
+smaato.net
+an.yandex.ru
